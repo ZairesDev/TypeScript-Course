@@ -1,7 +1,9 @@
 "use strict";
-const userName = 'Faissal';
-console.log(userName);
-const button = document.querySelector('button');
-button.addEventListener('click', () => {
-    console.log('Hello World');
-});
+const firstName = 'Faissal';
+const lastName = 'Shabani';
+const fullName = `${firstName} ${lastName} `;
+console.log(fullName);
+// const button = document.querySelector('button');
+// button.addEventListener('click', () => {
+//   console.log('Hello World')
+// })
