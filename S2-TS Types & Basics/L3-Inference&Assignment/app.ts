@@ -1,4 +1,4 @@
-function add(n1: number, n2: number, n3: number, showResult: boolean, phrase: string) {
+function aedd(n1: number, n2: number, n3: number, showResult: boolean, phrase: string) {
   // if (typeof n1 !== 'number' || typeof n2 !== 'number') {
   //   throw new Error('Incorrect input!');
   // }
@@ -18,4 +18,4 @@ number3 = 27;
 const printResult = true;
 let resultPhrase = 'Result is: ';
 
-add(number1, number2, number3, printResult, resultPhrase);
+aedd(number1, number2, number3, printResult, resultPhrase);
