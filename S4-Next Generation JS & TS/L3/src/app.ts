@@ -18,8 +18,7 @@ age = 29;
 
 // console.log(result);
 
-// setting the default value of b to 1. This default parameter behavior must only be applied to the last parameter.
-const add = (a: number, b: number = 1) => a + b;
+const add = (a: number, b: number) => a + b;
 
 const printOutput: (a: number | string) => void = output => console.log(output);
 
