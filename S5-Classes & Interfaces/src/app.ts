@@ -5,7 +5,9 @@ class Department {
     this.name = n;
   };
 
-  describe() {
+
+  // this:Department tells TS that the 'this' will always refer to the Department class
+  describe(this: Department) {
     console.log('Department: ' + this.name)
   }
 }
@@ -13,3 +15,6 @@ class Department {
 // the constructor argument will be gathered from the new instance
 const accounting = new Department('Accounting');
 accounting.describe();
+
+const accountingCopy = { name: 'happy', describe: accounting.describe };
+accountingCopy.describe();
