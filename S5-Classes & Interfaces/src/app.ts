@@ -3,7 +3,7 @@ class Department {
   // private name: string;
   private employees: string[] = [];
 
-  constructor(private id: string, public name: string) {
+  constructor(private readonly id: string, public name: string) {
     // this.name = n;
     // this.id = id;
   };
@@ -24,14 +24,45 @@ class Department {
   }
 }
 
+class ITDepartment extends Department {
+  admins: string[]
+  constructor(id: string, admins: string[]) {
+    super(id, 'IT');
+    this.admins = admins
+  }
+}
+
+class AccoutingDepartment extends Department {
+  constructor(id:string, private reports: string[]) {
+    super(id, 'Accounting');
+  }
+
+  
+
+  addReport(text: string) {
+    this.reports.push(text)
+  }
+
+  printReports() {
+    console.log(this.reports)
+  }
+}
+
 // the constructor argument will be gathered from the new instance
-const accounting = new Department('45','Accounting');
+const it = new ITDepartment('45', ['Donkey']);
 
-accounting.addEmployee('Godzilla');
-accounting.addEmployee('King Kong');
+it.addEmployee('Godzilla');
+it.addEmployee('King Kong');
 
-// accounting.employees[2] = 'Mothra';
+// it.employees[2] = 'Mothra';
 
-accounting.describe();
-accounting.name = 'Stone Cold Steve Austin'
-accounting.printEmployeeInfo();
+it.describe();
+it.name = 'Stone Cold Steve Austin'
+it.printEmployeeInfo();
+console.log(it);
+
+const accounting = new AccoutingDepartment('46', []);
+
+accounting.addReport('What a report');
+accounting.printReports();
+console.log(accounting);
