@@ -1,18 +1,17 @@
-class Department {
+abstract class Department {
+  static fiscalYear = 2023
   // private id: string;
   // private name: string;
   protected employees: string[] = [];
 
-  constructor(private readonly id: string, public name: string) {
+  constructor(protected readonly id: string, public name: string) {
     // this.name = n;
     // this.id = id;
   };
 
 
   // this:Department tells TS that the 'this' will always refer to the Department class
-  describe(this: Department) {
-    console.log(`Department (${this.id}): ${this.name}`)
-  }
+  abstract describe(this: Department) : void;
 
   addEmployee(employee: string) {
     this.employees.push(employee);
@@ -22,6 +21,10 @@ class Department {
     console.log(this.employees.length);
     console.log(this.employees);
   }
+
+  static createEmployee(name: string) {
+    return { name: name }
+  }
 }
 
 class ITDepartment extends Department {
@@ -29,6 +32,10 @@ class ITDepartment extends Department {
   constructor(id: string, admins: string[]) {
     super(id, 'IT');
     this.admins = admins
+  }
+
+  describe() {
+    console.log('IT Department - ID: ' + this.id)
   }
 }
 
@@ -54,6 +61,11 @@ class AccoutingDepartment extends Department {
     this.lastReport = reports[0];
   }
 
+  describe() {
+    console.log('Accounting Departmnet - ID: ' + this.id)
+  }
+  
+
   addEmployee(name: string) {
     if (name === 'Godzilla') {
       return;
@@ -70,6 +82,9 @@ class AccoutingDepartment extends Department {
     console.log(this.reports)
   }
 }
+
+const employee1 = Department.createEmployee('Sonic');
+console.log(employee1, Department.fiscalYear)
 
 // the constructor argument will be gathered from the new instance
 const it = new ITDepartment('45', ['Donkey']);
@@ -92,6 +107,6 @@ accounting.addReport('What a report');
 console.log(accounting.mostRecentReport)
 
 accounting.addEmployee('R2D2')
-
-accounting.printReports();
-accounting.printEmployeeInfo();
+accounting.describe();
+// accounting.printReports();
+// accounting.printEmployeeInfo();
