@@ -1,6 +1,8 @@
-interface Greetable {
-  firstName: string;
-  
+interface Named {
+  readonly firstName: string;
+}
+
+interface Greetable extends Named {  
   greet(phrase: string): void;
 }
 
@@ -19,6 +21,7 @@ class Player implements Greetable {
   }
 }
 
+// setting it to type Greetable means that it must have the same properties as the Greetable interface
 let player1: Greetable;
 
 player1 = new Player('Obiwan');
