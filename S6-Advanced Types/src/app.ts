@@ -74,6 +74,7 @@ function useVehicle(vehicle: Vehicle) {
   vehicle.drive();
 
   // Type guard
+  // Can NOT be used with interfaces because interfaces are not compiled to JS
   if(vehicle instanceof Truck) {
     vehicle.loadCargo(1000);
   }
@@ -81,3 +82,31 @@ function useVehicle(vehicle: Vehicle) {
 
 useVehicle(vehicle1);
 useVehicle(vehicle2);
+
+// Discriminated unions, works well with object types
+interface Bird {
+  type: 'bird';
+  flyingSpeed: number;
+}
+
+interface Horse {
+  type: 'horse';
+  runningSpeed: number;
+}
+
+type Animal = Bird | Horse;
+
+function moveAnimal(animal: Animal) {
+  let speed;
+  // Discriminated union is the animal.type property. It is a common property in all interfaces
+  switch(animal.type) {
+    case 'bird': 
+      speed = animal.flyingSpeed;
+      break;
+    case 'horse':
+      speed = animal.runningSpeed  
+  }
+  console.log('Moving at speed: ' + speed);
+}
+
+moveAnimal({type: 'horse', runningSpeed: 400});
