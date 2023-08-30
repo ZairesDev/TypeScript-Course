@@ -117,6 +117,8 @@ paragraphVersion1.value = 'Hi there!';
 
 // Type casting version 2
 // Preferred way and best for React apps
-const paragraph = document.getElementById('message-output')! as HTMLInputElement;
-let paragraphValue = (paragraph as HTMLInputElement).value;
-// paragraph.value = 'Hi there!';
+// the bang operator ! tells TS that the element will never be null
+const paragraphVersion2 = document.getElementById('message-output')! as HTMLInputElement;
+// let paragraphValue = (paragraph as HTMLInputElement).value;
+paragraphVersion2.value = 'Hi there!';
+
