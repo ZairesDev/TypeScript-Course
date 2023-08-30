@@ -122,3 +122,9 @@ const paragraphVersion2 = document.getElementById('message-output')! as HTMLInpu
 // let paragraphValue = (paragraph as HTMLInputElement).value;
 paragraphVersion2.value = 'Hi there!';
 
+// In situations where you are not sure if the element exists aka null
+const paragraphVersion3 = document.getElementById('message-output');
+// Check if the element exists first before using it
+if (paragraphVersion3) {
+  (paragraphVersion3 as HTMLInputElement).value = 'Hi there!';
+}
