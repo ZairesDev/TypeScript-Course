@@ -110,3 +110,13 @@ function moveAnimal(animal: Animal) {
 }
 
 moveAnimal({type: 'horse', runningSpeed: 400});
+
+// Type casting version 1 
+const paragraphVersion1 = <HTMLInputElement> document.getElementById('message-output')!;
+paragraphVersion1.value = 'Hi there!';
+
+// Type casting version 2
+// Preferred way and best for React apps
+const paragraph = document.getElementById('message-output')! as HTMLInputElement;
+let paragraphValue = (paragraph as HTMLInputElement).value;
+// paragraph.value = 'Hi there!';
