@@ -128,3 +128,15 @@ const paragraphVersion3 = document.getElementById('message-output');
 if (paragraphVersion3) {
   (paragraphVersion3 as HTMLInputElement).value = 'Hi there!';
 }
+
+// Index Types
+interface ErrorContainer {
+  // { email: 'Not a valid email', username: 'Must start with a character' }
+  // shows that the key is a string and the value is a string regardless of whether we know what the key is  
+  [prop: string]: string;
+}
+
+const errorBag: ErrorContainer = {
+  email: 'Not a valid email',
+  username: 'Must start with a character'
+};
