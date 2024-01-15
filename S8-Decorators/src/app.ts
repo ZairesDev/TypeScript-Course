@@ -16,10 +16,23 @@ function Logger(logString: string) {
   }
 }
 
+// Decorator Factory with Template
+function WithTemplate(template: string, hookId: string) {
+  return function(constructor: any) {
+    const hookEl = document.getElementById(hookId)
+    const p = new constructor()
+    if (hookEl) {
+      hookEl.innerHTML = template
+      hookEl.querySelector('h1')!.textContent = p.name
+    }
+  }
+}
+
 // '@' is a symbol that tells TypeScript that this is a decorator
 // @Logger
 // Calling the decorator factory and passing the string
-@Logger('LOGGING - TEAM')
+// @Logger('LOGGING - TEAM')
+@WithTemplate('<h1>My Formula One Team</h1>', 'app')
 class FormulaOneTeam {
   name = 'Mercedes'
 
