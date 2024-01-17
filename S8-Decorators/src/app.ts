@@ -18,10 +18,17 @@ function Logger(logString: string) {
 
 // Decorator Factory with Template
 function WithTemplate(template: string, hookId: string) {
-  return function(_: Function) {
-    const hookEl = document.getElementById(hookId)
-    if (hookEl) {
-      hookEl.innerHTML = template
+  return function<T extends new (..._: any[]) => { name: string }>(originalConstructor: T) {
+    return class extends originalConstructor {
+      constructor(..._: any[]) {
+        super()
+        console.log('Rendering template')
+        const hookEl = document.getElementById(hookId)
+        if (hookEl) {
+          hookEl.innerHTML = template
+          hookEl.querySelector('h1')!.textContent = this.name
+        }
+      }
     }
   }
 }
@@ -29,7 +36,7 @@ function WithTemplate(template: string, hookId: string) {
 // '@' is a symbol that tells TypeScript that this is a decorator
 // @Logger
 // Calling the decorator factory and passing the string
-// @Logger('LOGGING - TEAM')
+@Logger('LOGGING - TEAM')
 @WithTemplate('<h1>My Formula One Team</h1>', 'app')
 class FormulaOneTeam {
   name = 'Mercedes'
@@ -45,7 +52,6 @@ console.log(team)
 
 // ---
 
-// Property Decorators
 // If the decorator is attached to a property, the constructor function of the class is passed as the second argument
 function Log(target: any, propertyName: string | Symbol) {
   console.log('Property decorator!')
@@ -98,3 +104,34 @@ class Product {
     return this._price * (1 + tax)
   }
 }
+
+const p1 = new Product('Book', 22)
+const p2 = new Product('Book 2', 288)
+
+// creating auto bind decorator
+function AutoBind(_: any, _2: string | Symbol, descriptor: PropertyDescriptor) {
+  const originalMethod = descriptor.value
+  const adjDescriptor: PropertyDescriptor = {
+    configurable: true,
+    enumerable: false,
+    get() {
+      const boundFn = originalMethod.bind(this)
+      return boundFn
+    }
+  }
+  return adjDescriptor
+}
+
+class Printer {
+  message = 'This works!'
+
+  showMessage() {
+    console.log(this.message)
+  }
+}
+
+const p = new Printer()
+
+const button = document.querySelector('button')!
+// default way of doing this. 'this' will be undefined because it is not bound to the class instance
+button.addEventListener('click', p.showMessage.bind(p))
