@@ -108,7 +108,7 @@ class Product {
 const p1 = new Product('Book', 22)
 const p2 = new Product('Book 2', 288)
 
-// creating auto bind decorator
+// creating auto bind decorator start
 function AutoBind(_: any, _2: string | Symbol, descriptor: PropertyDescriptor) {
   const originalMethod = descriptor.value
   const adjDescriptor: PropertyDescriptor = {
@@ -125,6 +125,7 @@ function AutoBind(_: any, _2: string | Symbol, descriptor: PropertyDescriptor) {
 class Printer {
   message = 'This works!'
 
+  @AutoBind
   showMessage() {
     console.log(this.message)
   }
@@ -134,4 +135,82 @@ const p = new Printer()
 
 const button = document.querySelector('button')!
 // default way of doing this. 'this' will be undefined because it is not bound to the class instance
-button.addEventListener('click', p.showMessage.bind(p))
+button.addEventListener('click', p.showMessage)
+
+// creating auto bind decorator end
+
+type ValidatorConfig = {
+  [property: string]: {
+    [validatableProp: string]: string[]
+  }
+}
+
+const registeredValidators: ValidatorConfig = {}
+
+function Required(target: any, propName: string) {
+  registeredValidators[target.constructor.name] = {
+    ...registeredValidators[target.constructor.name],
+    [propName]: [...(registeredValidators[target.constructor.name]?.[propName] ?? []),'required']
+  }
+}
+
+function PositiveNumber(target: any, propName: string) {
+  registeredValidators[target.constructor.name] = {
+    ...registeredValidators[target.constructor.name],
+    [propName]: [...(registeredValidators[target.constructor.name]?.[propName] ?? []),'positive']
+  }
+}
+
+function validate(obj: any) {
+  const objValidatorConfig = registeredValidators[obj.constructor.name]
+  if (!objValidatorConfig) return true
+
+  let isValid = true
+
+  for (const prop in objValidatorConfig) {
+    for (const validator of objValidatorConfig[prop]) {
+      switch (validator) {
+        case 'required':
+          isValid = isValid && !!obj[prop]
+          break;
+        case 'positive':
+          isValid = isValid && obj[prop] > 0
+          break
+      }
+    }
+  }
+  return isValid
+}
+
+// ---
+class Team {
+  @Required
+  principle: string
+  @PositiveNumber
+  age: number
+
+  constructor(p: string, a: number) {
+    this.principle = p
+    this.age = a
+  }
+
+}
+
+const teamForm = document.querySelector('form')!
+teamForm.addEventListener('submit', (event) => {
+  event.preventDefault()
+
+  const principleEl = document.getElementById('principle')! as HTMLInputElement
+  const ageEl = document.getElementById('age')! as HTMLInputElement
+
+  const principle = principleEl.value
+  // adding the + sign in front of the value will convert it to a number
+  const age = +ageEl.value
+
+  const newTeam = new Team(principle, age)
+  if (!validate(newTeam)) {
+    alert('Invalid input, please try again!')
+    return
+  }
+  console.log(newTeam)
+})
